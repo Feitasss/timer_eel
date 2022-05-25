@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> <!--Зробити Ресет-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="eel.js"></script>
+    <div id="div-element" class="Time">Timer</div>
+</head>
+<body>
+    <div class="box">
+        <form action="#">
+            <input type="text" id="Min" placeholder="minutes">
+            <input type="text" id="Sec" placeholder="seconds">
+            <button id="btn" onclick="playAudio();">Start</button>
+            <button id="Rbtn">Boom</button>
+        </form>
+    </div>
+    <audio src="VineBoomSound.mp3" id = "audio" controls style="display: none;"></audio>
+    <script>
+        
+        const startButton = document.getElementById("btn");
+        const timeMinutes = document.getElementById("Min");
+        const timeSeconds = document.getElementById("Sec");
+
+        document.getElementById("btn").onclick = function () {
+
+            let minutes = document.querySelector("#Min").value;
+            let seconds = document.querySelector("#Sec").value;
+
+            if (minutes === "" && seconds === "" || parseInt(minutes) > 59 || parseInt(seconds) > 59) {
+                startButton.disabled = false;
+                timeMinutes.disabled = false;
+                timeSeconds.disabled = false;
+            }
+            else {
+                startButton.disabled = true;
+                timeMinutes.disabled = true;
+                timeSeconds.disabled = true;
+            }
+            eel.timer(minutes,seconds);
+        }
+
+        document.getElementById("Rbtn").onclick = function () {
+            timeSeconds.value = "";
+            timeMinutes.value = "";
+            // eel.reset();
+            playAudio();
+        }
+
+       eel.expose(show_time);
+       function show_time(time) {
+
+        document.getElementById("div-element").innerHTML = time;
+        if (time === 'Finish') {
+
+            playAudio()
+            startButton.disabled = false;
+            timeMinutes.disabled = false;
+            timeSeconds.disabled = false;
+            timeSeconds.value = "";
+            timeMinutes.value = "";
+        }
+       }
+
+       function playAudio() {
+        document.getElementById("audio").play();
+       }
+
+    </script>
+</body>
+</html>
